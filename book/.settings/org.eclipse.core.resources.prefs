@@ -1,2 +1,5 @@
 eclipse.preferences.version=1
-encoding//src/main/java/book/ex01/DsUtil.java=UTF-8
+encoding//src/main/java/book/dao/impl/AdminDaoJdbcImpl.java=UTF-8
+encoding//src/main/java/book/util/DsUtil.java=UTF-8
+encoding//src/main/java/book/web/Login.java=UTF-8
+encoding//src/main/java/book/web/bookAdd.java=UTF-8
