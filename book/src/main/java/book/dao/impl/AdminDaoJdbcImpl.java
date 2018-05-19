@@ -18,7 +18,7 @@ public class AdminDaoJdbcImpl implements AdminDao {
 		boolean ret = false;
 		try {
 			conn = DsUtil.getConn();
-			String  sql="select * from t_admin where name=? and pwd=?";
+			String  sql="select * from user where username=? and password=?";
 			System.out.println(sql);
 			//stmt = conn.createStatement();
 			stmt=conn.prepareStatement(sql);

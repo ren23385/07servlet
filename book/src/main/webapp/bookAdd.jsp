@@ -1,3 +1,6 @@
+<%@page import="java.util.List"%>
+<%@page import="book.vo.TypeVo"%>
+
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <!DOCTYPE html>
@@ -68,14 +71,14 @@
 
 
 					<div class="form-group">
-						<label for="bookauthor" class="col-sm-2 control-label">
+						<label for="selectid" class="col-sm-2 control-label">
 							书籍种类： </label>
 						<div class="col-sm-10">
-							<select class="form-control" name="tid" id="ele">
-								<option value="1">计算机编程</option>
+							<select class="form-control" name="tid" id="selectid">
+					<!--		<option value="1">计算机编程</option>
 								<option value="2">基础烹饪</option>
 								<option value="3">数学</option>
-								<option value="4">文学</option>
+								<option value="4">文学</option>-->								
 							</select>
 						</div>
 					</div>
@@ -162,6 +165,17 @@
 			});
 
 		});
+
+			function fillSel(types) {
+				var sel = document.getElementById("selectid");
+				for (var i = 0; i < types.length; i++) {
+					sel.appendChild(new Option(types[i].name, types[i].id));
+				}
+			}
+
+		
 	</script>
+	<!-- iframe处于安全考虑不允许执行JavaScript -->
+	<iframe src="findAllTypes" style="display: none;"></iframe>
 </body>
 </html>

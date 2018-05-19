@@ -1,6 +1,7 @@
 package book.web;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,7 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import book.dao.impl.BookDaoJdbcImpl;
+import org.apache.commons.beanutils.BeanUtils;
+
+import book.biz.BookBiz;
+import book.biz.impl.*;
+import book.util.MyBeanUtils;
+import book.vo.BookVo;
 
 
 @WebServlet("/bookAdd")
@@ -42,32 +48,24 @@ public class bookAdd extends HttpServlet {
 		String ext = fileName.substring(fileName.lastIndexOf('.') + 1);
 		String newFileName = UUID.randomUUID().toString() + "." + ext;
 		part.write(request.getServletContext().getRealPath("upload/" + newFileName));
-
-		String name = request.getParameter("name");
-		String bookdesc = request.getParameter("desc");
-		String author = request.getParameter("author");
-		String bprice = request.getParameter("price");
-		double price = Double.parseDouble(bprice);
-		String strTid = request.getParameter("tid");
-		int tid = Integer.parseInt(strTid);
-		String strPubDate = request.getParameter("date");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date pubDate = null;
-		try {
-			pubDate = sdf.parse(strPubDate);
-		} catch (ParseException e) {
+		
+		BookVo bookvo = new BookVo();
+		/*try {
+			BeanUtils.populate(bookvo, request.getParameterMap());
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		MyBeanUtils.populate(bookvo, request.getParameterMap(),"yyyy-mm-dd");
+		bookvo.setPhoto(newFileName);
 		
-		BookDaoJdbcImpl book = new BookDaoJdbcImpl();
-		int rs = book.save(name, bookdesc, price, author, tid, newFileName, pubDate);
-		boolean bl = false;
-		
-		if(rs>0)
-			bl = true;
-
-		if (bl) {
+		BookBiz bookBiz = new BookBizImpl();
+		int rs = bookBiz.saveBook(bookvo);
+		response.setContentType("text/html;charset=utf-8");
+		if (rs>0) {
 			response.sendRedirect("main.jsp");
 		} else {
 			request.getRequestDispatcher("login.jsp").forward(request, response);

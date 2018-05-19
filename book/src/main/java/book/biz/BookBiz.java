@@ -1,9 +1,14 @@
 package book.biz;
 
-import java.util.Date;
+import java.util.List;
+
+import book.vo.BookVo;
 
 public interface BookBiz {
 
-	int saveBook(String name, String descri, double price, String author, int tid, String newFileName, Date pubDate);
+	int saveBook(BookVo bookvo);
+	List<BookVo> findAllBooks(int pageNo);
+
+	int findTotal();
 
 }
