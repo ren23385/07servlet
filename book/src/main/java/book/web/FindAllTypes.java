@@ -27,6 +27,7 @@ public class FindAllTypes extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		TypeBiz typeBiz=new TypeBizImpl();
+		//request.getParameter("");
 		List<TypeVo> ls=typeBiz.findAllTypes();
 		//返回JavaScript类型类型
 		response.setContentType("text/html;charset=utf-8");

@@ -8,4 +8,6 @@ public interface TypeDao {
 
 	List<TypeVo> findAll();
 
+	List<TypeVo> findone(int id);
+
 }

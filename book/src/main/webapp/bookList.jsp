@@ -1,5 +1,6 @@
 <%@page import="java.util.List"%>
 <%@page import="book.vo.BookVo"%>
+<%@page import="book.vo.TypeVo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -11,12 +12,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="bower_components/bootstrap/dist/css/bootstrap.css"
 	rel="stylesheet" type="text/css" />
+	
+<style type="text/css">
+.mytr th{
+	text-align: center;
+}
+.mytr td{
+	text-align: center;
+}
+
+.mytr td img{
+
+	max-width: 150px;
+}
+
+</style>	
+
 </head>
 <body>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
-			<nav class="navbar navbar-default" role="navigation">
+			<nav class="navbar navbar-default" role="navigation" >
 				<div class="navbar-header">
 					 
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -52,127 +69,191 @@
 			</nav>
 		</div>
 	</div>
+	
+	
+	
+	
+	
+	
 	<div class="row">
 		<div class="col-md-12">
 
-			<table class="table table-hover table-condensed   table-bordered">
-				<thead>
+				<table class="table table-hover table-condensed   table-bordered ">
+		
+					<thead>
 					<tr>
-						<th>id</th>
-						<th>name</th>
-						<th>descri</th>
-						<th>tid</th>
-						<th>photo</th>
-						<th>price</th>
-						<th>author</th>
-						<th>pubDate</th>
+						<td colspan="9">
+							<form class="form-inline">
+								<div class="form-group">
+									<label for="inputbookname">书名</label> <input type="text"
+										class="form-control" id="inputname" name="name"
+										placeholder="Jane Doe">
+								</div>
+								<div class="form-group">
+									<label for="selectid" >类型</label> 
+									<select class="form-control" name="tid" id="selectid">	
+									<option value="-1">---请选择---</option>							
+									</select>
+									
+								</div>
+								<button type="submit" class="btn btn-default">提交</button>
+							</form>
+
+
+						</td>
 					</tr>
-				</thead>
-				<tbody>
-					<%
+					
+					
+					
+						<tr class="mytr">
+							<th>id</th>
+							<th>书名</th>
+							<th>介绍</th>
+							<th>类型</th>
+							<th>图片</th>
+							<th>价格</th>
+							<th>作者</th>
+							<th>出版时间</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%
 						List<BookVo> ls = (List<BookVo>) request.getAttribute("ls");
+						
 						for (BookVo bookVo : ls) {
 					%>
-					<tr>
-						<td><%=bookVo.getId()%></td>
-						<td><%=bookVo.getName()%></td>
-						<td><%=bookVo.getDesc()%></td>
-						<td><%=bookVo.getTid()%></td>
-						<td><img alt="" src="upload/<%=bookVo.getPhoto()%>"></td>
-						<td><%=bookVo.getPrice()%></td>
-						<td><%=bookVo.getAuthor()%></td>
-						<td><%=bookVo.getdate()%></td>
-					</tr>
-					<%
+						<tr class="mytr">
+							<td><%=bookVo.getId()%></td>
+							<td><%=bookVo.getName()%></td>
+							<td><%=bookVo.getDesc()%></td>
+							<td id="tid"><%=bookVo.getTid()%></td>
+							<td><img alt=""
+								src="upload/<%=bookVo.getPhoto()%>"></td>
+							<td><%=bookVo.getPrice()%></td>
+							<td><%=bookVo.getAuthor()%></td>
+							<td><%=bookVo.getdate()%></td>
+							<td>
+								<a href="bookDel?id=<%= bookVo.getId() %>" class="glyphicon glyphicon-remove" id="del" title="删除" 
+								onclick="confrimDel(event)">
+								</a> &nbsp;&nbsp; 
+								<a href="bookEdit<%= bookVo.getId() %>" class="glyphicon glyphicon-pencil" id="change" title="修改">
+								</a>
+							</td>
+
+						</tr>
+						<%
 						}
 					%>
-					<tr>
-						<td colspan="8" style="padding-top: 0px; padding-bottom: 0px;"
-							class="text-center">
+						<tr>
+							<td colspan="9" style="padding-top: 0px; padding-bottom: 0px;"
+								class="text-center">
 
-							<ul class="pagination" style="margin: 0px;">
-								<%
+								<ul class="pagination" style="margin: 0px;">
+									<%
 									int pageNo = (Integer) request.getAttribute("pageNo");
 									if (pageNo == 1) {
 								%>
-								<li class="disabled"><a href="#">&lt;&lt;</a></li>
-								<%
+									<li class="disabled"><a href="#">&lt;&lt;</a></li>
+									<%
 									} else {
 								%>
-								<li><a href="bookList?pageNo=<%=pageNo - 1%>">&lt;&lt;</a></li>
-								<%
+									<li><a href="bookList?pageNo=<%=pageNo - 1%>">&lt;&lt;</a></li>
+									<%
 									}
 								%>
 
-								<%
+									<%
 									int totalPage = (Integer) request.getAttribute("totalPage");
 									if (totalPage <= 5) {
 										for (int i = 1; i <= totalPage; i++) {
 								%>
-								<li><a href="bookList?pageNo=<%=i%>"><%=i%></a></li>
-								<%
+									<li><a href="bookList?pageNo=<%=i%>"><%=i%></a></li>
+									<%
 									}
 									} else if (pageNo <= 3) {
 								%>
 
-								<li><a href="bookList?pageNo=1">1</a></li>
-								<li><a href="bookList?pageNo=2">2</a></li>
-								<li><a href="bookList?pageNo=3">3</a></li>
-								<li><a href="bookList?pageNo=4">4</a></li>
-								<li><a href="bookList?pageNo=<%=totalPage%>">..<%=totalPage%></a></li>
-								<%
+									<li><a href="bookList?pageNo=1">1</a></li>
+									<li><a href="bookList?pageNo=2">2</a></li>
+									<li><a href="bookList?pageNo=3">3</a></li>
+									<li><a href="bookList?pageNo=4">4</a></li>
+									<li><a href="bookList?pageNo=<%=totalPage%>">..<%=totalPage%></a></li>
+									<%
 									} else if (pageNo >= totalPage - 2) {
 								%>
-								<li><a href="bookList?pageNo=1">1..</a></li>
-								<li><a href="bookList?pageNo=<%=totalPage - 3%>"><%=totalPage - 3%></a></li>
-								<li><a href="bookList?pageNo=<%=totalPage - 2%>"><%=totalPage - 2%></a></li>
-								<li><a href="bookList?pageNo=<%=totalPage - 1%>"><%=totalPage - 1%></a></li>
-								<li><a href="bookList?pageNo=<%=totalPage%>"><%=totalPage%></a></li>
+									<li><a href="bookList?pageNo=1">1..</a></li>
+									<li><a href="bookList?pageNo=<%=totalPage - 3%>"><%=totalPage - 3%></a></li>
+									<li><a href="bookList?pageNo=<%=totalPage - 2%>"><%=totalPage - 2%></a></li>
+									<li><a href="bookList?pageNo=<%=totalPage - 1%>"><%=totalPage - 1%></a></li>
+									<li><a href="bookList?pageNo=<%=totalPage%>"><%=totalPage%></a></li>
 
-								<%
+									<%
 									} else {
 								%>
-								<li><a href="bookList?pageNo=1">1..</a></li>
-								<li><a href="bookList?pageNo=<%=pageNo - 1%>"><%=pageNo - 1%></a></li>
-								<li><a href="bookList?pageNo=<%=pageNo%>"><%=pageNo%></a></li>
-								<li><a href="bookList?pageNo=<%=pageNo + 1%>"><%=pageNo + 1%></a></li>
-								<li><a href="bookList?pageNo=<%=totalPage%>">..<%=totalPage%></a></li>
+									<li><a href="bookList?pageNo=1">1..</a></li>
+									<li><a href="bookList?pageNo=<%=pageNo - 1%>"><%=pageNo - 1%></a></li>
+									<li><a href="bookList?pageNo=<%=pageNo%>"><%=pageNo%></a></li>
+									<li><a href="bookList?pageNo=<%=pageNo + 1%>"><%=pageNo + 1%></a></li>
+									<li><a href="bookList?pageNo=<%=totalPage%>">..<%=totalPage%></a></li>
 
-								<%
+									<%
 									}
 								%>
 
-								<%
+									<%
 									if (pageNo == totalPage) {
 								%>
-								<li class="disabled"><a href="#">&gt;&gt;</a></li>
-								<%
+									<li class="disabled"><a href="#">&gt;&gt;</a></li>
+									<%
 									} else {
 								%>
-								<li><a href="bookList?pageNo=<%=pageNo + 1%>">&gt;&gt;</a></li>
-								<%
+									<li><a href="bookList?pageNo=<%=pageNo + 1%>">&gt;&gt;</a></li>
+									<%
 									}
 								%>
-							</ul>
-						</td>
-					</tr>
+								</ul>
+							</td>
+						</tr>
 
-				</tbody>
-			</table>
+					</tbody>
+				</table>
 
-		</div>
+			</div>
 	</div>
 	</div>
 	<script type="text/javascript"
 		src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript"
 		src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+		
+	<script type="text/javascript"></script>
+		
 	<script type="text/javascript">
+	
       $(function(){
-              $("a[ href='bookList?pageNo=<%=pageNo%>
-		']").parent("li").addClass(
-					"active");
+              $("a[ href='bookList?pageNo=<%=pageNo%>']").parent("li").addClass("active");
 		});
+
+
+		function confrimDel(event){
+
+				if(!confirm("确认删除")) {
+					event.preventDefault();
+					
+				}
+			
+
+			}
+
+		
+		function fillSel(types) {
+			var sel = document.getElementById("selectid");
+			for (var i = 0; i < types.length; i++) {
+				sel.appendChild(new Option(types[i].name, types[i].id));
+			}
+		}
 	</script>
+		<iframe src="findAllTypes" style="display: none;"></iframe>
 </body>
 </html>

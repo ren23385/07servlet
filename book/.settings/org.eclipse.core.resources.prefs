@@ -1,8 +1,12 @@
 eclipse.preferences.version=1
 encoding//src/main/java/book/dao/impl/AdminDaoJdbcImpl.java=UTF-8
+encoding//src/main/java/book/dao/impl/BookDaoJdbcImpl.java=UTF-8
 encoding//src/main/java/book/util/DsUtil.java=UTF-8
 encoding//src/main/java/book/util/MyBeanUtils.java=UTF-8
+encoding//src/main/java/book/web/BookList.java=UTF-8
 encoding//src/main/java/book/web/FindAllTypes.java=UTF-8
 encoding//src/main/java/book/web/Login.java=UTF-8
+encoding//src/main/java/book/web/ValidCodeServlet.java=UTF-8
 encoding//src/main/java/book/web/bookAdd.java=UTF-8
 encoding/<project>=UTF-8
+separateDerivedEncodings=true

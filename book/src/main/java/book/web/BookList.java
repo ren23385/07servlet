@@ -24,18 +24,36 @@ public class BookList extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		//权限拦截
+		/*if(request.getSession().getAttribute("loginSuccess") == null || !request.getSession().getAttribute("loginSuccess").equals("1"))
+		{
+			response.sendRedirect("login.jsp");
+			return;
+		}*/
+		
 		// 1
 		String strPageNo = request.getParameter("pageNo");
 		int pageNo;
 		try {
 			pageNo = Integer.parseInt(strPageNo);
 		} catch (NumberFormatException e) {
-			pageNo = 1;// 默认看第一页
+			pageNo = 1;
 		}
+		//1.1获取搜索条件
+		String name = request.getParameter("name");
+		String srid = request.getParameter("tid");
+		int id = -1;
+		try {
+			id = Integer.parseInt(srid);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		// 2
 		BookBiz bookBiz = new BookBizImpl();
-		List<BookVo> ls = bookBiz.findAllBooks(pageNo);
-		int total = bookBiz.findTotal();
+		List<BookVo> ls = bookBiz.findAllBooks(pageNo,name,id);
+		int total = bookBiz.findTotal(name,id);
 		// 3
 		if (total % PageConstant.PAGE_SIZE == 0) {
 			request.setAttribute("totalPage", total / PageConstant.PAGE_SIZE);

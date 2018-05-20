@@ -8,7 +8,9 @@ public interface BookDao {
 
 	//int save(String name, String descri, double price, String author, int tid, String newFileName, Date pubDate);
 	public int save (BookVo bookvo);
-	List<BookVo> findAll(int pageNo);
+	List<BookVo> findAll(int pageNo, String name, int id);
 
-	int getTotal();
+	int getTotal(String name, int tid);
+	public boolean del(int id);
+	public BookVo findById(int id);
 }

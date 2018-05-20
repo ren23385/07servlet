@@ -35,6 +35,13 @@ public class bookAdd extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		//权限拦截
+	/*	if(request.getSession().getAttribute("loginSuccess") == null || !request.getSession().getAttribute("loginSuccess").equals("1"))
+		{
+			response.sendRedirect("login.jsp");
+			return;
+		}*/
+		
 
 		// 解决乱码问题
 		request.setCharacterEncoding("utf-8");

@@ -7,7 +7,21 @@
 <title>主界面</title>
 <!-- 1、告诉浏览器表缩放 -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+
+.myadd{
+	width: 100%;
+	height: auto;
+
+
+}
+
+
+
+</style>
+
 </head>
 <body>
 <div class="container-fluid">
@@ -49,6 +63,11 @@
 			</nav>
 		</div>
 	</div>
+
+
+	
+	
+	
 </div>
    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

@@ -17,15 +17,28 @@ public class BookBizImpl implements BookBiz {
 	}
 
 	@Override
-	public List<BookVo> findAllBooks(int pageNo) {
+	public List<BookVo> findAllBooks(int pageNo,String name,int id) {
 		BookDao bookDao=new BookDaoJdbcImpl();
-		return  bookDao.findAll(pageNo);
+		return  bookDao.findAll(pageNo,name,id);
 	}
 
 	@Override
-	public int findTotal() {
+	public int findTotal(String name ,int tid) {
 		BookDao bookDao=new BookDaoJdbcImpl();
-		return bookDao.getTotal();
+		return bookDao.getTotal(name,tid);
+	}
+
+	@Override
+	public boolean bookdel(int id) {
+		BookDao bookDao = new BookDaoJdbcImpl();
+		return bookDao.del(id);
+	}
+
+	@Override
+	public BookVo findById(int id) {
+		BookDao bookDao = new BookDaoJdbcImpl();
+		
+		return bookDao.findById(id);
 	}
 
 }

@@ -39,5 +39,34 @@ public class TypeDaoJdbcImpl implements TypeDao {
 		
 		return null;
 	}
+	
+	
+	
+	@Override
+	public List<TypeVo> findone(int id) {
+		Connection conn=null;
+		Statement stmt=null;
+		ResultSet rs=null;
+		try {
+			conn=DsUtil.getConn();
+			stmt=conn.createStatement();
+			rs=stmt.executeQuery("select * from type where id ="+id);
+			List<TypeVo> ls=new ArrayList<>();
+			while (rs.next()) {
+				TypeVo typeVo=new TypeVo();
+				typeVo.setId(rs.getInt("id"));
+				typeVo.setName(rs.getString("typename"));
+				ls.add(typeVo);
+			}
+			return ls;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			
+			DsUtil.free(rs, stmt, conn);
+		}
+		
+		return null;
+	}
 
 }

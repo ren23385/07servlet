@@ -43,16 +43,28 @@ public class BookDaoJdbcImpl implements BookDao {
 	}
 
 	@Override
-	public List<BookVo> findAll(int pageNo) {
+	public List<BookVo> findAll(int pageNo,String name ,int tid) {
 		Connection conn=null;
 		Statement stmt=null;
 		ResultSet rs=null;
 		try {
 			conn=DsUtil.getConn();
 			stmt=conn.createStatement();
-			rs=stmt.executeQuery("select * from bookdetails limit "+((pageNo-1)*PageConstant.PAGE_SIZE+1-1)+","+PageConstant.PAGE_SIZE);
+			String sql = "select * from bookdetails where 1 = 1";
+			
+			//4种情况执行
+		
+			if(tid != -1) {
+				sql += " and tid = "+tid;
+			}
+			if(name!=null && !name.equals("")) {
+				sql += " and bookname like '%"+name+"%'";
+			}		
+			
+			sql += " limit "+((pageNo-1)*PageConstant.PAGE_SIZE+1-1)+","+PageConstant.PAGE_SIZE;
+			rs=stmt.executeQuery(sql);
 			List<BookVo> ls=new ArrayList<>();
-			while (rs.next()) {//每行对应一个对象
+			while (rs.next()) {//
 				//tid,bookname,bookdesc,bookauthor,bookprice,booktime,bookphoto
 		      BookVo bookVo=new BookVo();
 		      bookVo.setAuthor(rs.getString("bookauthor"));
@@ -77,14 +89,21 @@ public class BookDaoJdbcImpl implements BookDao {
 	}
 
 	@Override
-	public int getTotal() {
+	public int getTotal(String name,int tid) {
 		Connection conn = null;
 		PreparedStatement stmt=null;
 		ResultSet rs = null;
 		try {
 			conn = DsUtil.getConn();			
-			String  sql="select count(*) from bookdetails";
-			System.out.println(sql);			
+			String  sql="select count(*) from bookdetails where 1 = 1";
+			
+			if(tid != -1) {
+				sql+= " and tid = "+tid;
+			}
+			if(name != null && !name.equals("")) {
+				sql += " and bookname like '%"+name+"%'";
+			}
+			
 			stmt=conn.prepareStatement(sql);			
 			rs=stmt.executeQuery();
 			if (rs.next()) {
@@ -96,5 +115,53 @@ public class BookDaoJdbcImpl implements BookDao {
 			DsUtil.free(rs, stmt, conn);
 		}
 		return 0;
+	}
+
+	@Override
+	public boolean del(int id) {
+		Connection conn = null;
+		PreparedStatement stmt=null;
+		boolean rs = false;
+		try {
+			conn = DsUtil.getConn();			
+			String  sql="delete  from bookdetails where id = "+id;
+			System.out.println(sql);			
+			stmt=conn.prepareStatement(sql);			
+			rs = stmt.execute();
+			if(rs)
+				return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DsUtil.free( stmt, conn);
+		}
+		return false;
+	}
+
+	@Override
+	public BookVo findById(int id) {
+		
+		Connection conn=null;
+		Statement stmt=null;
+		ResultSet rs=null;
+		try {
+			conn=DsUtil.getConn();
+			stmt=conn.createStatement();
+			String sql = "select * from bookdetails where id ="+id;
+			rs=stmt.executeQuery(sql);
+			List<BookVo> ls=new ArrayList<>();
+			while (rs.next()) {//
+		      BookVo bookVo=new BookVo();
+		      ls.add(bookVo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			
+			DsUtil.free(rs, stmt, conn);
+		}
+		
+		
+		return null;
 	}
 }

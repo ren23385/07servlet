@@ -46,6 +46,9 @@ public class Login extends HttpServlet {
 		boolean ts = adminimpl.checkuser(name,pwd);
 		
 		if(ts) {
+			//记录是否成功
+			request.getSession().setAttribute("loginSuccess", "1");
+			//
 			response.sendRedirect("main.jsp");
 		}else {
 			request.setAttribute("msg", "用户名或密码错误");
